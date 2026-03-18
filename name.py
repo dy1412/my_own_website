@@ -40,12 +40,6 @@ if 'flipped' not in st.session_state:
     st.session_state.flipped = False # 카드가 뒤집혔는지 여부
     st.session_state.selected_fortune = random.choice(fortunes) # 뽑힌 운세
 
-# 리셋 버튼 (새로 뽑기)
-if st.button("🔮 다른 카드 섞기"):
-    st.session_state.flipped = False
-    st.session_state.selected_fortune = random.choice(fortunes)
-    st.rerun()
-
 st.write("▼ 아래 카드를 클릭해서 운세를 확인하세요!")
 
 # 6. 카드 UI 구현
