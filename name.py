@@ -1,60 +1,56 @@
 import streamlit as st
-from openai import OpenAI
+import random
+from datetime import date
 
-# 1. 페이지 설정 및 디자인
-st.set_page_config(page_title="냉장고 파먹기 AI 셰프", page_icon="👨‍🍳")
+# --- PAGE CONFIG ---
+st.set_page_config(page_title="오늘의 픽셀 운세", page_icon="🔮")
 
-st.title("👨‍🍳 냉장고 파먹기 AI 셰프")
-st.subheader("남은 재료를 알려주시면 맛있는 레시피를 제안해 드려요!")
+# --- DATA: 무작위 운세 문구 리스트 ---
+# 라이브러리 설치를 안 하므로, 미리 정의된 문구에서 랜덤 추출합니다.
+fortunes_list = [
+    "오늘은 생각지 못한 곳에서 행운이 찾아옵니다. 주위를 잘 살펴보세요!",
+    "작은 오해가 생길 수 있으니, 말과 행동에 신중을 기하는 것이 좋습니다.",
+    "그동안 노력했던 일들이 결실을 맺는 날입니다. 자신감을 가지세요!",
+    "오늘은 새로운 사람을 만나기에 아주 좋은 날입니다. 적극적으로 움직이세요.",
+    "건강 운이 약간 저조합니다. 무리하지 말고 충분한 휴식을 취하세요.",
+    "금전적인 부분에서 기쁜 소식이 들려옵니다. 복권 한 장 어떠세요?",
+    "결정을 내리기 힘든 문제가 있다면, 오늘은 잠시 미루는 것이 현명합니다.",
+    "친한 친구와의 대화에서 중요한 힌트를 얻게 될 것입니다.",
+    "오늘은 파란색 계열의 옷이 행운을 가져다줍니다.",
+    "뜻밖의 칭찬을 듣게 되어 하루 종일 기분이 좋아질 것입니다.",
+    "묵묵히 자신의 길을 가면 결국 성공합니다. 조급해하지 마세요.",
+    "오늘은 집에서 조용히 취미 생활을 즐기는 것이 이득입니다."
+]
 
-# 2. OpenAI API 키 설정 (보안을 위해 사이드바에서 입력받거나 환경변수 권장)
-with st.sidebar:
-    api_key = st.text_input("OpenAI API Key", type="password")
-    st.info("API 키가 없으면 작동하지 않습니다. [OpenAI 홈페이지](https://platform.openai.com/)에서 발급받으세요.")
+# --- UI: MAIN TITLE ---
+st.title("🔮 오늘의 운세: 픽셀 카드를 뒤집어라!")
+st.subheader(f"{date.today().strftime('%Y년 %m월 %d일')}의 운세")
+st.write("나의 별자리와 띠를 선택하고, 운세 카드를 터치해 보세요.")
 
-# 3. 사용자 입력 섹션
-ingredients = st.text_input("냉장고에 있는 재료를 쉼표(,)로 구분해서 입력하세요", placeholder="예: 계란, 양파, 스팸, 찬밥")
+# --- UI: SELECTION ---
+col1, col2 = st.columns(2)
 
-# 4. 레시피 생성 로직
-if st.button("레시피 생성하기! 🪄"):
-    if not api_key:
-        st.error("API 키를 입력해 주세요!")
-    elif not ingredients:
-        st.warning("재료를 입력해 주세요!")
-    else:
-        try:
-            client = OpenAI(api_key=api_key)
-            
-            with st.spinner('AI 셰프가 고민 중입니다... 잠시만 기다려주세요!'):
-                # AI에게 전달할 프롬프트 구성
-                prompt = f"""
-                당신은 세계적인 요리사입니다. 사용자가 가진 재료들만 활용하거나, 
-                집에 흔히 있을법한 양념(간장, 설탕, 소금 등)만 추가해서 만들 수 있는 최고의 요리를 추천해주세요.
-                
-                입력된 재료: {ingredients}
-                
-                형식:
-                1. 요리 이름
-                2. 재료 목록 (사용자가 입력한 것 위주)
-                3. 상세 조리 단계 (1, 2, 3...)
-                4. 셰프의 팁 (한 줄)
-                """
+with col1:
+    zodiac_signs = ["양자리", "황소자리", "쌍둥이자리", "게자리", "사자자리", "처녀자리", 
+                    "천칭자리", "전갈자리", "사수자리", "염소자리", "물병자리", "물고기자리"]
+    user_zodiac = st.selectbox("🌠 나의 별자리", zodiac_signs)
 
-                response = client.chat.completions.create(
-                    model="gpt-3.5-turbo", # 또는 "gpt-4"
-                    messages=[{"role": "user", "content": prompt}]
-                )
+with col2:
+    animal_signs = ["쥐띠", "소띠", "호랑이띠", "토끼띠", "용띠", "뱀띠", 
+                    "말띠", "양띠", "원숭이띠", "닭띠", "개띠", "돼지띠"]
+    user_animal = st.selectbox("🐾 나의 띠", animal_signs)
 
-                recipe = response.choices[0].message.content
-                
-                # 5. 결과 화면 출력
-                st.success("짜잔! 오늘의 추천 요리입니다.")
-                st.markdown("---")
-                st.markdown(recipe)
-                
-        except Exception as e:
-            st.error(f"오류가 발생했습니다: {e}")
+st.divider()
 
-# 하단 안내
-st.markdown("---")
-st.caption("남은 재료를 버리지 말고 맛있는 요리로 변신시켜 보세요! 🥗")
+# --- LOGIC: FORTUNE GENERATION (Session State 사용) ---
+# 사용자가 입력을 바꿀 때마다 운세가 계속 바뀌지 않도록 '오늘의 운세'를 세션에 고정합니다.
+if 'today_fortune' not in st.session_state:
+    # 띠와 별자리를 조합하여 유일한 값을 만들고, 이를 무작위 시드로 사용하여
+    # 같은 날, 같은 조합이면 항상 같은 운세가 나오도록 설정할 수 있습니다. (구현 생략 - 완전 무작위)
+    st.session_state['today_fortune'] = random.choice(fortunes_list)
+
+# 별자리나 띠가 바뀌면 운세를 다시 생성하도록 버튼을 추가할 수도 있습니다.
+# (이 코드에서는 완전 무작위로 세션에 저장된 것만 보여줍니다.)
+
+
+# --- UI:
