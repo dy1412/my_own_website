@@ -2,55 +2,80 @@ import streamlit as st
 import random
 from datetime import date
 
-# --- PAGE CONFIG ---
-st.set_page_config(page_title="오늘의 픽셀 운세", page_icon="🔮")
+# 1. 페이지 설정
+st.set_page_config(page_title="오늘의 운세는?", page_icon="🃏")
 
-# --- DATA: 무작위 운세 문구 리스트 ---
-# 라이브러리 설치를 안 하므로, 미리 정의된 문구에서 랜덤 추출합니다.
-fortunes_list = [
-    "오늘은 생각지 못한 곳에서 행운이 찾아옵니다. 주위를 잘 살펴보세요!",
-    "작은 오해가 생길 수 있으니, 말과 행동에 신중을 기하는 것이 좋습니다.",
-    "그동안 노력했던 일들이 결실을 맺는 날입니다. 자신감을 가지세요!",
-    "오늘은 새로운 사람을 만나기에 아주 좋은 날입니다. 적극적으로 움직이세요.",
-    "건강 운이 약간 저조합니다. 무리하지 말고 충분한 휴식을 취하세요.",
-    "금전적인 부분에서 기쁜 소식이 들려옵니다. 복권 한 장 어떠세요?",
-    "결정을 내리기 힘든 문제가 있다면, 오늘은 잠시 미루는 것이 현명합니다.",
-    "친한 친구와의 대화에서 중요한 힌트를 얻게 될 것입니다.",
-    "오늘은 파란색 계열의 옷이 행운을 가져다줍니다.",
-    "뜻밖의 칭찬을 듣게 되어 하루 종일 기분이 좋아질 것입니다.",
-    "묵묵히 자신의 길을 가면 결국 성공합니다. 조급해하지 마세요.",
-    "오늘은 집에서 조용히 취미 생활을 즐기는 것이 이득입니다."
+# 2. 제목 변경
+st.title("🔮 오늘의 운세는?")
+st.write(f"오늘은 {date.today().strftime('%Y년 %m월 %d일')}입니다.")
+
+# 3. 데이터 준비 (랜덤 문구)
+fortunes = [
+    "✨ 오늘은 생각지도 못한 행운이 넝쿨째 굴러들어올 날입니다!",
+    "🏃 적극적으로 움직이세요. 가만히 있으면 기회를 놓칠 수 있습니다.",
+    "🎁 소중한 사람에게 작은 선물을 해보세요. 배가 되어 돌아옵니다.",
+    "🧘 마음의 여유가 필요한 날입니다. 따뜻한 차 한 잔 어떠세요?",
+    "💰 금전운이 상승하고 있습니다! 계획했던 소비를 해도 좋은 날입니다.",
+    "🤫 비밀을 잘 지켜야 합니다. 구설수에 오를 수 있으니 조심하세요.",
+    "🌈 고민하던 문제가 말끔히 해결될 징조가 보입니다.",
+    "🍀 파란색 아이템이 행운을 가져다줄 거예요.",
+    "💡 새로운 아이디어가 샘솟는 날입니다. 메모를 잊지 마세요!",
+    "🍎 건강을 위해 가벼운 산책을 추천합니다. 몸이 가벼워질 거예요."
 ]
 
-# --- UI: MAIN TITLE ---
-st.title("🔮 오늘의 운세: 픽셀 카드를 뒤집어라!")
-st.subheader(f"{date.today().strftime('%Y년 %m월 %d일')}의 운세")
-st.write("나의 별자리와 띠를 선택하고, 운세 카드를 터치해 보세요.")
-
-# --- UI: SELECTION ---
+# 4. 입력 섹션
+st.divider()
 col1, col2 = st.columns(2)
-
 with col1:
-    zodiac_signs = ["양자리", "황소자리", "쌍둥이자리", "게자리", "사자자리", "처녀자리", 
-                    "천칭자리", "전갈자리", "사수자리", "염소자리", "물병자리", "물고기자리"]
-    user_zodiac = st.selectbox("🌠 나의 별자리", zodiac_signs)
-
+    user_zodiac = st.selectbox("🌠 별자리 선택", 
+        ["양자리", "황소자리", "쌍둥이자리", "게자리", "사자자리", "처녀자리", "천칭자리", "전갈자리", "사수자리", "염소자리", "물병자리", "물고기자리"])
 with col2:
-    animal_signs = ["쥐띠", "소띠", "호랑이띠", "토끼띠", "용띠", "뱀띠", 
-                    "말띠", "양띠", "원숭이띠", "닭띠", "개띠", "돼지띠"]
-    user_animal = st.selectbox("🐾 나의 띠", animal_signs)
+    user_animal = st.selectbox("🐾 띠 선택", 
+        ["쥐띠", "소띠", "호랑이띠", "토끼띠", "용띠", "뱀띠", "말띠", "양띠", "원숭이띠", "닭띠", "개띠", "돼지띠"])
 
 st.divider()
 
-# --- LOGIC: FORTUNE GENERATION (Session State 사용) ---
-# 사용자가 입력을 바꿀 때마다 운세가 계속 바뀌지 않도록 '오늘의 운세'를 세션에 고정합니다.
-if 'today_fortune' not in st.session_state:
-    # 띠와 별자리를 조합하여 유일한 값을 만들고, 이를 무작위 시드로 사용하여
-    # 같은 날, 같은 조합이면 항상 같은 운세가 나오도록 설정할 수 있습니다. (구현 생략 - 완전 무작위)
-    st.session_state['today_fortune'] = random.choice(fortunes_list)
+# 5. 카드 뒤집기 로직 (세션 상태 활용)
+if 'flipped' not in st.session_state:
+    st.session_state.flipped = False # 카드가 뒤집혔는지 여부
+    st.session_state.selected_fortune = random.choice(fortunes) # 뽑힌 운세
 
-# 별자리나 띠가 바뀌면 운세를 다시 생성하도록 버튼을 추가할 수도 있습니다.
-# (이 코드에서는 완전 무작위로 세션에 저장된 것만 보여줍니다.)
+# 리셋 버튼 (새로 뽑기)
+if st.button("🔮 다른 카드 섞기"):
+    st.session_state.flipped = False
+    st.session_state.selected_fortune = random.choice(fortunes)
+    st.rerun()
 
+st.write("▼ 아래 카드를 클릭해서 운세를 확인하세요!")
 
-# --- UI:
+# 6. 카드 UI 구현
+# 버튼을 카드처럼 크게 디자인합니다.
+if not st.session_state.flipped:
+    # 카드 앞면 (클릭 전)
+    if st.button(f"✨\n\n{user_zodiac} & {user_animal}\n\n당신의 운세는?\n\n(클릭해서 뒤집기)", use_container_width=True, type="primary"):
+        st.session_state.flipped = True
+        st.rerun()
+else:
+    # 카드 뒷면 (클릭 후)
+    st.balloons() # 축하 효과
+    st.success("카드가 뒤집혔습니다!")
+    
+    # 결과 창 디자인
+    st.markdown(f"""
+        <div style="
+            background-color: #ffffff;
+            border: 5px solid #FF4B4B;
+            border-radius: 20px;
+            padding: 50px;
+            text-align: center;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
+        ">
+            <h2 style="color: #FF4B4B;">🍀 오늘의 결과</h2>
+            <hr>
+            <h1 style="font-size: 1.5rem; color: #31333F;">{st.session_state.selected_fortune}</h1>
+            <p style="color: #888; margin-top: 20px;">{user_zodiac} {user_animal}님, 좋은 하루 되세요!</p>
+        </div>
+    """, unsafe_allow_html=True)
+
+st.divider()
+st.caption("본 운세는 재미로만 즐겨주세요. 모든 선택은 당신의 몫입니다!")
