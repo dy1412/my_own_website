@@ -40,7 +40,7 @@ if 'flipped' not in st.session_state:
     st.session_state.flipped = False # 카드가 뒤집혔는지 여부
     st.session_state.selected_fortune = random.choice(fortunes) # 뽑힌 운세
 
-st.write("▼ 아래 카드를 클릭해서 운세를 확인하세요!")
+st.write("▼ 아래 버튼을 클릭해서 운세를 확인하세요!")
 
 # 6. 카드 UI 구현
 # 버튼을 카드처럼 크게 디자인합니다.
@@ -52,7 +52,7 @@ if not st.session_state.flipped:
 else:
     # 카드 뒷면 (클릭 후)
     st.balloons() # 축하 효과
-    st.success("카드가 뒤집혔습니다!")
+    st.success("운세를 확인해보세요!")
     
     # 결과 창 디자인
     st.markdown(f"""
