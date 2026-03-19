@@ -5,21 +5,26 @@ from datetime import date
 # 1. 페이지 설정
 st.set_page_config(page_title="오늘의 운세", page_icon="🔮", layout="centered")
 
-
-# 2. 스타일 적용 (전체 배경 라벤더색 + 카드 가독성)
+# 2. 전체 스타일 적용 (배경, 카드, 버튼)
 st.markdown("""
 <style>
-body {
-    background-color: #FF0000;  /* 라벤더색 */
+/* 앱 전체 배경 */
+[data-testid="stAppViewContainer"] {
+    background-color: #E6E6FA;  /* 라벤더 */
+}
+
+/* 사이드바 배경 */
+[data-testid="stSidebar"] {
+    background-color: #D8BFD8;  /* 연보라 */
+}
+
+/* 제목, 텍스트 색상 */
+h1, h2, h3, h4, p, span, div {
     color: #222222;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-h1, h2, h3, h4 {
-    color: #4B0082;
-    text-shadow: 0 0 5px rgba(255,255,255,0.4);
-}
-
+/* 버튼 스타일 */
 .stButton>button {
     background: linear-gradient(90deg, #9370DB, #D8BFD8);
     color: #fff;
@@ -35,6 +40,7 @@ h1, h2, h3, h4 {
     transform: scale(1.05);
 }
 
+/* 운세 카드 */
 .fortune-card {
     background: rgba(255,255,255,0.9);
     border-radius: 25px;
@@ -46,7 +52,7 @@ h1, h2, h3, h4 {
 </style>
 """, unsafe_allow_html=True)
 
-# 3. 제목
+# 3. 앱 제목
 st.title("🔮 오늘의 운세는?")
 st.write(f"오늘은 **{date.today().strftime('%Y년 %m월 %d일')}**입니다.")
 
@@ -83,14 +89,18 @@ st.divider()
 user_name = st.text_input("👤 당신의 이름을 입력하세요", value="여행자")
 col1, col2 = st.columns(2)
 with col1:
-    user_zodiac = st.selectbox("🌠 별자리 선택", ["양자리","황소자리","쌍둥이자리","게자리","사자자리","처녀자리",
-                                                 "천칭자리","전갈자리","사수자리","염소자리","물병자리","물고기자리"])
+    user_zodiac = st.selectbox("🌠 별자리 선택", [
+        "양자리","황소자리","쌍둥이자리","게자리","사자자리","처녀자리",
+        "천칭자리","전갈자리","사수자리","염소자리","물병자리","물고기자리"
+    ])
 with col2:
-    user_animal = st.selectbox("🐾 띠 선택", ["쥐띠","소띠","호랑이띠","토끼띠","용띠","뱀띠","말띠",
-                                             "양띠","원숭이띠","닭띠","개띠","돼지띠"])
+    user_animal = st.selectbox("🐾 띠 선택", [
+        "쥐띠","소띠","호랑이띠","토끼띠","용띠","뱀띠","말띠",
+        "양띠","원숭이띠","닭띠","개띠","돼지띠"
+    ])
 st.divider()
 
-# 6. 카드 클릭 UI
+# 6. 운세 카드 클릭 UI
 st.write(f"### 🃏 {user_name}님, 카드를 클릭해 오늘의 운세를 확인하세요!")
 
 if not st.session_state.flipped:
@@ -114,7 +124,7 @@ else:
                🎨 행운 색상: <b>{st.session_state.lucky_color}</b></p>
         </div>
     """, unsafe_allow_html=True)
-    
+
     if st.button("🔄 다시 뽑기", use_container_width=True):
         st.session_state.flipped = False
         st.session_state.selected_fortune = None
