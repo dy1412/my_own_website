@@ -5,17 +5,17 @@ from datetime import date
 # 1. 페이지 설정
 st.set_page_config(page_title="오늘의 운세는?", page_icon="🔮", layout="centered")
 
-# 2. 배경 스타일 (몽환적)
+# 2. 배경과 스타일
 st.markdown(
     """
     <style>
     body {
-        background: radial-gradient(circle at top, #1a1a2e, #162447, #1f4068, #e43f5a);
-        color: #fff;
+        background: linear-gradient(135deg, #4B0082, #8A2BE2, #E6E6FA);
+        color: #222222;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
     .stButton>button {
-        background: linear-gradient(90deg, #ff6ec4, #7873f5);
+        background: linear-gradient(90deg, #8A2BE2, #E6E6FA);
         color: #fff;
         font-weight: bold;
         border-radius: 12px;
@@ -24,7 +24,7 @@ st.markdown(
         transition: all 0.3s ease;
     }
     .stButton>button:hover {
-        box-shadow: 0 0 20px #ff6ec4, 0 0 20px #7873f5;
+        box-shadow: 0 0 15px #8A2BE2, 0 0 15px #E6E6FA;
         transform: scale(1.05);
     }
     </style>
@@ -88,7 +88,7 @@ if not st.session_state.flipped:
         fortune_category = random.choice(list(st.session_state.all_fortunes.keys()))
         st.session_state.selected_fortune = random.choice(st.session_state.all_fortunes[fortune_category])
         st.session_state.lucky_number = random.randint(1, 99)
-        st.session_state.lucky_color = random.choice(["빨강", "파랑", "초록", "노랑", "보라", "분홍", "주황"])
+        st.session_state.lucky_color = random.choice(["보라", "파랑", "핑크", "흰색", "은색"])
         st.session_state.flipped = True
         st.rerun()
     st.caption("카드를 클릭하면 오늘의 몽환적 운세와 행운 숫자가 공개됩니다.")
@@ -97,21 +97,21 @@ else:
     st.balloons()
     st.markdown(f"""
         <div style="
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid #ff6ec4;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid #8A2BE2;
             border-radius: 20px;
             padding: 30px;
             text-align: center;
-            box-shadow: 0 0 40px #ff6ec4, 0 0 20px #7873f5 inset;
-            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px #8A2BE2, 0 0 10px #E6E6FA inset;
+            color: #222222;
         ">
-            <h2 style="color: #ff6ec4; text-shadow: 0 0 10px #ff6ec4;">🍀 오늘의 운세</h2>
-            <p style="font-size: 1rem; color: #fff;">
+            <h2 style="color: #8A2BE2; text-shadow: 0 0 5px #E6E6FA;">🍀 오늘의 운세</h2>
+            <p style="font-size: 1rem;">
                 <span style="font-weight: bold;">{user_name}</span>님
                 ({user_zodiac} / {user_animal})의 운세
             </p>
-            <hr style="border: 0.5px solid #fff;">
-            <h1 style="font-size: 1.3rem; line-height: 1.5; color: #fff; text-shadow: 0 0 10px #7873f5;">
+            <hr style="border: 0.5px solid #8A2BE2;">
+            <h1 style="font-size: 1.3rem; line-height: 1.5;">
                 {st.session_state.selected_fortune}
             </h1>
             <p style="margin-top:20px; font-size:1rem;">🎲 행운 숫자: <b>{st.session_state.lucky_number}</b>  
