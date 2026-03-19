@@ -4,13 +4,13 @@ from datetime import date
 
 # 1. 페이지 설정
 st.set_page_config(page_title="오늘의 운세", page_icon="🔮", layout="centered")
-st.background-color:#F0F0FF;
+
 
 # 2. 스타일 적용 (전체 배경 라벤더색 + 카드 가독성)
 st.markdown("""
 <style>
 body {
-    background-color: #E6E6FA;  /* 라벤더색 */
+    background-color: #F0F0FF;  /* 라벤더색 */
     color: #222222;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
