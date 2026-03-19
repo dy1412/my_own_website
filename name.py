@@ -5,22 +5,22 @@ from datetime import date
 # 1. 페이지 설정
 st.set_page_config(page_title="오늘의 운세", page_icon="🔮", layout="centered")
 
-# 2. 스타일 적용 (몽환적 느낌 + 카드 디자인)
+# 2. 스타일 적용 (전체 배경 라벤더색 + 카드 가독성)
 st.markdown("""
 <style>
 body {
-    background: linear-gradient(135deg, #4B0082, #6A5ACD, #E6E6FA);
+    background-color: #E6E6FA;  /* 라벤더색 */
     color: #222222;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 h1, h2, h3, h4 {
     color: #4B0082;
-    text-shadow: 0 0 10px rgba(255,255,255,0.4);
+    text-shadow: 0 0 5px rgba(255,255,255,0.4);
 }
 
 .stButton>button {
-    background: linear-gradient(90deg, #8A2BE2, #9370DB);
+    background: linear-gradient(90deg, #9370DB, #D8BFD8);
     color: #fff;
     font-weight: bold;
     border-radius: 12px;
@@ -30,16 +30,16 @@ h1, h2, h3, h4 {
 }
 
 .stButton>button:hover {
-    box-shadow: 0 0 15px #8A2BE2, 0 0 15px #E6E6FA;
+    box-shadow: 0 0 10px #9370DB, 0 0 10px #D8BFD8;
     transform: scale(1.05);
 }
 
 .fortune-card {
-    background: rgba(255,255,255,0.85);
+    background: rgba(255,255,255,0.9);
     border-radius: 25px;
     padding: 30px;
     text-align: center;
-    box-shadow: 0 0 20px rgba(75,0,130,0.6), 0 0 10px rgba(138,43,226,0.4) inset;
+    box-shadow: 0 0 20px rgba(75,0,130,0.3), 0 0 10px rgba(138,43,226,0.2) inset;
     margin-bottom: 20px;
 }
 </style>
