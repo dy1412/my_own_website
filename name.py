@@ -10,7 +10,7 @@ st.set_page_config(page_title="오늘의 운세", page_icon="🔮", layout="cent
 st.markdown("""
 <style>
 body {
-    background-color: #000000;  /* 라벤더색 */
+    background-color: #FF0000;  /* 라벤더색 */
     color: #222222;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
