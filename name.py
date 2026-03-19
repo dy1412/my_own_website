@@ -5,56 +5,81 @@ from datetime import date
 # 1. 페이지 설정
 st.set_page_config(page_title="오늘의 운세", page_icon="🔮", layout="centered")
 
-# 2. 전체 스타일 적용 (배경, 카드, 버튼)
+# 2. 모던 스타일 적용 (라벤더 + 은하 + 카드 + 버튼)
 st.markdown("""
 <style>
-/* 앱 전체 배경 */
+/* 전체 앱 배경: 라벤더 + 은하 느낌 */
 [data-testid="stAppViewContainer"] {
-    background-color: #E6E6FA;  /* 라벤더 */
+    background: linear-gradient(135deg, #E6E6FA, #D8BFD8);
+    background-size: cover;
 }
 
 /* 사이드바 배경 */
 [data-testid="stSidebar"] {
-    background-color: #D8BFD8;  /* 연보라 */
+    background-color: #D8BFD8;
 }
 
-/* 제목, 텍스트 색상 */
+/* 제목과 텍스트 */
 h1, h2, h3, h4, p, span, div {
-    color: #222222;
+    color: #2E0854;  /* 진한 보라 */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-/* 버튼 스타일 */
-.stButton>button {
-    background: linear-gradient(90deg, #9370DB, #D8BFD8);
-    color: #fff;
-    font-weight: bold;
-    border-radius: 12px;
-    padding: 14px 0;
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
-}
-
-.stButton>button:hover {
-    box-shadow: 0 0 10px #9370DB, 0 0 10px #D8BFD8;
-    transform: scale(1.05);
 }
 
 /* 운세 카드 */
 .fortune-card {
-    background: rgba(255,255,255,0.9);
-    border-radius: 25px;
-    padding: 30px;
+    background: rgba(255,255,255,0.85);
+    border-radius: 30px;
+    padding: 40px;
     text-align: center;
-    box-shadow: 0 0 20px rgba(75,0,130,0.3), 0 0 10px rgba(138,43,226,0.2) inset;
-    margin-bottom: 20px;
+    box-shadow: 0 0 25px rgba(138,43,226,0.5), 0 0 15px rgba(75,0,130,0.2) inset;
+    margin-bottom: 30px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.fortune-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 40px rgba(138,43,226,0.7), 0 0 20px rgba(75,0,130,0.3) inset;
+}
+
+/* 버튼 스타일 */
+.stButton>button {
+    background: linear-gradient(90deg, #9370DB, #BA55D3);
+    color: #fff;
+    font-weight: bold;
+    border-radius: 20px;
+    padding: 15px 0;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.stButton>button:hover {
+    box-shadow: 0 0 15px #BA55D3, 0 0 15px #9370DB;
+    transform: scale(1.08);
+}
+
+/* 카드 안 텍스트 */
+.fortune-card h2 {
+    font-size: 2rem;
+    color: #8A2BE2;
+    margin-bottom: 10px;
+}
+
+.fortune-card h3 {
+    font-size: 1.3rem;
+    color: #4B0082;
+    line-height: 1.6;
+}
+
+.fortune-card p {
+    font-size: 1.1rem;
+    color: #2E0854;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# 3. 앱 제목
-st.title("🔮 오늘의 운세는?")
-st.write(f"오늘은 **{date.today().strftime('%Y년 %m월 %d일')}**입니다.")
+# 3. 제목
+st.markdown("<h1 style='text-align:center;'>🔮 오늘의 운세</h1>", unsafe_allow_html=True)
+st.markdown(f"<p style='text-align:center;'>오늘은 <b>{date.today().strftime('%Y년 %m월 %d일')}</b>입니다.</p>", unsafe_allow_html=True)
 
 # 4. 운세 데이터
 if 'selected_fortune' not in st.session_state:
@@ -100,8 +125,8 @@ with col2:
     ])
 st.divider()
 
-# 6. 운세 카드 클릭 UI
-st.write(f"### 🃏 {user_name}님, 카드를 클릭해 오늘의 운세를 확인하세요!")
+# 6. 카드 클릭 UI
+st.markdown(f"<h3 style='text-align:center;'>🃏 {user_name}님, 카드를 클릭해 오늘의 운세를 확인하세요!</h3>", unsafe_allow_html=True)
 
 if not st.session_state.flipped:
     if st.button(f"🧧 운세 확인", use_container_width=True):
@@ -124,7 +149,7 @@ else:
                🎨 행운 색상: <b>{st.session_state.lucky_color}</b></p>
         </div>
     """, unsafe_allow_html=True)
-
+    
     if st.button("🔄 다시 뽑기", use_container_width=True):
         st.session_state.flipped = False
         st.session_state.selected_fortune = None
